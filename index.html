@@ -1,98 +1,491 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Scene Viewer | The Legend of Puteri Saripu</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
-  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.1.0/model-viewer.min.js"></script>
-  <style>
-    :root { --viewer-ink:#263b32; --viewer-green:#416b54; --viewer-cream:#f6f3e9; --viewer-line:#d9dfd4; }
-    body.viewer-page { background:var(--viewer-cream); color:var(--viewer-ink); min-height:100vh; }
-    .viewer-top { max-width:1180px; margin:auto; padding:22px 5%; display:flex; justify-content:space-between; align-items:center; gap:16px; }
-    .viewer-brand { color:var(--viewer-ink); text-decoration:none; font-weight:700; letter-spacing:.04em; }
-    .viewer-back { display:inline-flex; align-items:center; gap:8px; text-decoration:none; color:var(--viewer-green); font-weight:700; border:1px solid var(--viewer-line); background:#fff; border-radius:999px; padding:10px 16px; }
-    .viewer-main { max-width:1180px; margin:0 auto; padding:20px 5% 60px; }
-    .viewer-heading { text-align:center; margin:10px auto 28px; }
-    .viewer-eyebrow { letter-spacing:.16em; text-transform:uppercase; font-size:.75rem; font-weight:700; color:var(--viewer-green); }
-    .viewer-heading h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,3.4rem); margin:10px 0; }
-    .viewer-heading p { color:#64756b; margin:0; }
-    .viewer-layout { display:grid; grid-template-columns:minmax(0,1.7fr) minmax(260px,.8fr); gap:22px; align-items:stretch; }
-    .model-card,.scene-panel { background:#fff; border:1px solid var(--viewer-line); border-radius:24px; overflow:hidden; box-shadow:0 12px 35px rgba(36,59,47,.06); }
-    .model-stage { position:relative; min-height:460px; background:radial-gradient(ellipse at center,#fefefe 0%,#eef2eb 100%); }
-    model-viewer { width:100%; height:460px; background:transparent; --poster-color:transparent; }
-    .model-message { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:26px; pointer-events:none; }
-    .model-message-inner { max-width:390px; background:rgba(255,255,255,.9); border:1px solid var(--viewer-line); border-radius:18px; padding:22px; box-shadow:0 8px 30px rgba(0,0,0,.05); }
-    .model-message-inner h2 { margin:0 0 8px; font-family:'Playfair Display',serif; }
-    .model-message-inner p { margin:0; color:#637168; line-height:1.6; }
-    .model-message.hidden { display:none; }
-    .viewer-controls { display:flex; flex-wrap:wrap; gap:10px; padding:16px; border-top:1px solid var(--viewer-line); }
-    .viewer-control { cursor:pointer; border:1px solid var(--viewer-line); background:#fff; color:var(--viewer-ink); padding:10px 14px; border-radius:999px; font:inherit; font-weight:600; }
-    .viewer-control:hover,.viewer-control.active { background:var(--viewer-green); border-color:var(--viewer-green); color:white; }
-    .scene-panel { padding:24px; display:flex; flex-direction:column; gap:16px; }
-    .scene-number { display:inline-block; background:#edf3e9; color:var(--viewer-green); border-radius:999px; padding:7px 12px; font-weight:700; font-size:.78rem; width:max-content; }
-    .scene-panel h2 { font-family:'Playfair Display',serif; margin:0; font-size:1.6rem; }
-    .scene-panel p { color:#65736a; line-height:1.7; margin:0; }
-    .viewer-language { border:1px solid var(--viewer-line); background:#fbfcfa; border-radius:12px; padding:11px 12px; color:var(--viewer-ink); font:inherit; }
-    .scene-nav { display:flex; gap:10px; margin-top:auto; }
-    .scene-nav a { flex:1; text-align:center; text-decoration:none; border-radius:999px; padding:11px 14px; font-weight:700; border:1px solid var(--viewer-line); color:var(--viewer-green); }
-    .scene-nav a.next { background:var(--viewer-green); color:white; border-color:var(--viewer-green); }
-    .viewer-tip { font-size:.85rem; padding:13px 15px; background:#f4f7f0; border-radius:14px; color:#596b5f; line-height:1.55; }
-    @media(max-width:800px){ .viewer-layout{grid-template-columns:1fr;} .model-stage,model-viewer{min-height:340px;height:340px;} .scene-panel{padding:20px;} }
-    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;}}
-  </style>
-</head>
-<body class="viewer-page">
-  <header class="viewer-top">
-    <a class="viewer-brand" href="index.html">THE LEGEND OF PUTERI SARIPU</a>
-    <a class="viewer-back" href="index.html#scenes">← Back to scenes</a>
-  </header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <main class="viewer-main">
-    <section class="viewer-heading">
-      <span class="viewer-eyebrow">Explore the story in 3D</span>
-      <h1 id="pageTitle">Scene 01</h1>
-      <p id="pageSubtitle">Explore the scene from every angle.</p>
-    </section>
-    <div class="viewer-layout">
-      <section class="model-card" aria-label="3D model viewer">
-        <div class="model-stage">
-          <model-viewer id="sceneModel" camera-controls touch-action="pan-y" auto-rotate rotation-per-second="18deg" interaction-prompt="auto" shadow-intensity="1" exposure="1" loading="eager" alt="Interactive 3D scene model"></model-viewer>
-          <div class="model-message" id="modelMessage">
-            <div class="model-message-inner">
-              <h2 id="messageTitle">Scene model not connected yet</h2>
-              <p id="messageText">This viewer is ready. Once the scene model link is added, it will appear here for you to rotate and explore.</p>
+    <title>The Legend of Puteri Saripu</title>
+
+    <link rel="icon" type="image/png" href="assets/logos/logo.png">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- NAVIGATION BAR -->
+
+    <header class="header">
+        <nav class="navbar">
+
+            <a href="#home" class="brand">
+                <img src="assets/logos/logo.png" alt="Puteri Saripu Logo">
+                <span>Puteri Saripu</span>
+            </a>
+
+            <button class="menu-toggle" id="menuToggle"
+                aria-label="Open navigation"
+                aria-expanded="false">
+                ☰
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#story">Story</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#languages">Languages</a></li>
+                <li><a href="#scenes">Scenes</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+
+            <a href="ar.html" class="nav-button">Scan the Book</a>
+
+        </nav>
+    </header>
+
+
+    <!-- HERO SECTION -->
+
+    <section class="hero" id="home">
+
+        <div class="hero-content">
+
+            <span class="eyebrow">
+                AN AUGMENTED REALITY STORYBOOK
+            </span>
+
+            <h1>The Legend of<br><span>Puteri Saripu</span></h1>
+
+            <p>
+                Discover the magic of Sabah's folklore through
+                Augmented Reality. Point your device at the book
+                and watch the story come alive in 3D.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="ar.html" class="btn primary">
+                    Start AR Scanning
+                </a>
+
+                <a href="#scenes" class="btn secondary">
+                    Explore in 3D
+                </a>
             </div>
-          </div>
+
+            <div class="hero-stats">
+
+                <div class="stat">
+                    <strong>12</strong>
+                    <span>AR Scenes</span>
+                </div>
+
+                <div class="stat">
+                    <strong>3</strong>
+                    <span>Narration Languages</span>
+                </div>
+
+                <div class="stat">
+                    <strong>0</strong>
+                    <span>Apps to Install</span>
+                </div>
+
+            </div>
+
         </div>
-        <div class="viewer-controls">
-          <button class="viewer-control active" id="rotateButton" type="button">⟳ Auto rotate</button>
-          <button class="viewer-control" id="animationButton" type="button" hidden>▶ Play animation</button>
-          <button class="viewer-control" id="resetButton" type="button">↺ Reset view</button>
-          <button class="viewer-control" id="fullscreenButton" type="button">⛶ Fullscreen</button>
+
+        <div class="hero-image">
+
+            <!-- INSERT BOOK COVER HERE -->
+
+           <img src="assets/images/Coverbuku.png"
+     alt="The Legend of Puteri Saripu Book Cover">
+
         </div>
-      </section>
-      <aside class="scene-panel">
-        <span class="scene-number" id="sceneBadge">SCENE 01 / 12</span>
-        <h2 id="sceneTitle">Scene 1</h2>
-        <p id="sceneDescription">This scene's description will be added when the story scenes are finalized.</p>
-        <label for="languageSelect"><strong>Story language</strong></label>
-        <select class="viewer-language" id="languageSelect">
-          <option value="en">English</option>
-          <option value="ms">Bahasa Melayu</option>
-          <option value="kd">Kadazandusun</option>
-        </select>
-        <div class="viewer-tip">🖐 Drag to rotate · Scroll or pinch to zoom · Two fingers to pan</div>
-        <div class="scene-nav">
-          <a id="previousScene" href="#">← Previous</a>
-          <a class="next" id="nextScene" href="#">Next →</a>
+
+    </section>
+
+
+    <!-- STORY SYNOPSIS -->
+
+    <section class="story-section section" id="story">
+
+        <div class="section-heading">
+            <span class="eyebrow">ABOUT THE STORY</span>
+            <h2>A Promise, a Journey, and a Second Chance</h2>
         </div>
-      </aside>
-    </div>
-  </main>
-  <script src="js/viewer.js"></script>
+
+        <div class="story-content">
+
+            <p>
+                After failing to control his anger, King Wawigan
+                breaks his promise. Disappointed by his actions,
+                Princess Saripu takes Prince Wulan back to the
+                heavenly realm.
+            </p>
+
+            <p>
+                Determined to make up for his mistake, the king
+                faces various difficult trials in the heavenly
+                realm with the help of Garuda and a kind-hearted eel.
+            </p>
+
+            <p>
+                Will King Wawigan reunite with his family?
+                Discover a meaningful tale about the importance
+                of keeping promises and having the courage
+                to admit one's mistakes.
+            </p>
+
+        </div>
+
+
+        <!-- MAIN CHARACTERS -->
+
+        <div class="section-heading">
+            <h2>Meet the Characters</h2>
+        </div>
+
+        <div class="character-grid">
+
+            <article class="character-card">
+
+               <img src="assets/characters/Mom.jpg"
+     alt="Puteri Saripu">
+
+                <h3>Puteri Saripu</h3>
+
+                <p>
+                    A princess from the heavenly realm.
+                </p>
+
+            </article>
+
+            <article class="character-card">
+
+               <img src="assets/characters/Dad.jpg"
+     alt="Raja Wawigan Anum">
+
+                <h3>Raja Wawigan Anum</h3>
+
+                <p>
+                    A king on a journey to reunite with his family.
+                </p>
+
+            </article>
+
+            <article class="character-card">
+
+                <img src="assets/characters/Putera.jpg"
+     alt="Putera Wulan Gandin">
+
+                <h3>Putera Wulan Gandin</h3>
+
+                <p>
+                    The beloved son of Saripu and Wawigan.
+                </p>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- HOW IT WORKS -->
+
+    <section class="how-section section" id="how-it-works">
+
+        <div class="section-heading">
+            <span class="eyebrow">YOUR AR EXPERIENCE</span>
+            <h2>Three Simple Steps</h2>
+            <p>No application installation required.</p>
+        </div>
+
+        <div class="steps-grid">
+
+            <article class="step-card">
+                <div class="step-number">01</div>
+                <h3>Choose a Language</h3>
+
+                <p>
+                    Select English, Malay or Kadazandusun
+                    for your storytelling experience.
+                </p>
+            </article>
+
+            <article class="step-card">
+                <div class="step-number">02</div>
+                <h3>Allow Camera Access</h3>
+
+                <p>
+                    Start AR scanning and allow your browser
+                    to access your device's camera.
+                </p>
+            </article>
+
+            <article class="step-card">
+                <div class="step-number">03</div>
+                <h3>Scan the Book</h3>
+
+                <p>
+                    Point your camera at an illustrated page
+                    and watch the 3D scene come to life.
+                </p>
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- LANGUAGE SELECTION -->
+
+    <section class="language-section section" id="languages">
+
+        <div class="section-heading">
+            <span class="eyebrow">AUDIO NARRATION</span>
+            <h2>Listen in Your Language</h2>
+            <p>Experience the story in three different languages.</p>
+        </div>
+
+        <div class="language-grid">
+
+            <article class="language-card">
+
+                <div class="language-icon">EN</div>
+
+                <h3>English</h3>
+
+                <p>Experience the story through English narration.</p>
+
+                <button class="audio-button" disabled>
+                    Audio Coming Soon
+                </button>
+
+                <div class="language-actions">
+                    <a href="ar.html?lang=en">AR</a>
+                    <a href="viewer.html?scene=1&amp;lang=en">3D</a>
+                </div>
+
+            </article>
+
+            <article class="language-card">
+
+                <div class="language-icon">BM</div>
+
+                <h3>Malay</h3>
+
+                <p>Enjoy the story through Malay narration.</p>
+
+                <button class="audio-button" disabled>
+                    Audio Coming Soon
+                </button>
+
+                <div class="language-actions">
+                    <a href="ar.html?lang=ms">AR</a>
+                    <a href="viewer.html?scene=1&amp;lang=ms">3D</a>
+                </div>
+
+            </article>
+
+            <article class="language-card">
+
+                <div class="language-icon">KD</div>
+
+                <h3>Kadazandusun</h3>
+
+                <p>Discover the story through Sabah's native language.</p>
+
+                <button class="audio-button" disabled>
+                    Audio Coming Soon
+                </button>
+
+                <div class="language-actions">
+                    <a href="ar.html?lang=kd">AR</a>
+                    <a href="viewer.html?scene=1&amp;lang=kd">3D</a>
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
+
+
+    <!-- 12 STORY SCENES -->
+
+    <section class="scenes-section section" id="scenes">
+
+        <div class="section-heading">
+
+            <span class="eyebrow">12 INTERACTIVE SCENES</span>
+
+            <h2>Every Page, a Magical World</h2>
+
+            <p>
+                Explore each scene in 3D, even without
+                the physical storybook.
+            </p>
+
+        </div>
+
+        <!-- ALL 12 SCENES WILL BE GENERATED USING JAVASCRIPT -->
+
+        <div class="scenes-grid" id="scenesGrid"></div>
+
+    </section>
+
+
+    <!-- FREQUENTLY ASKED QUESTIONS -->
+
+    <section class="faq-section section" id="faq">
+
+        <div class="section-heading">
+            <span class="eyebrow">NEED HELP?</span>
+            <h2>Frequently Asked Questions</h2>
+        </div>
+
+        <div class="faq-container">
+
+            <details class="faq-item">
+                <summary>Do I need to install an application?</summary>
+
+                <p>
+                    No. The AR experience runs directly
+                    through your web browser.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Why is my camera not opening?</summary>
+
+                <p>
+                    Make sure camera access is allowed in your
+                    browser settings and the website is opened
+                    through HTTPS.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Why is the page not being detected?</summary>
+
+                <p>
+                    Make sure the book is placed under good
+                    lighting and the entire illustration
+                    is visible to the camera.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Can I explore the scenes without the book?</summary>
+
+                <p>
+                    Yes. Select any scene from the 3D section
+                    to explore it without scanning the book.
+                </p>
+            </details>
+
+            <details class="faq-item">
+                <summary>Why is there no sound?</summary>
+
+                <p>
+                    Audio narration is currently under development.
+                    Once available, check your device volume
+                    and audio playback settings.
+                </p>
+            </details>
+
+        </div>
+
+    </section>
+
+
+    <!-- FINAL CALL TO ACTION -->
+
+    <section class="adventure-section">
+
+        <h2>Ready to Begin Your Adventure?</h2>
+
+        <p>
+            Open your book, grab your device,
+            and discover the magical world of Puteri Saripu.
+        </p>
+
+        <div class="adventure-buttons">
+
+            <a href="ar.html" class="btn primary">
+                Start AR Scanning
+            </a>
+
+            <a href="#scenes" class="btn secondary">
+                Explore in 3D
+            </a>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <div class="footer-brand">
+
+            <img src="assets/logos/logo.png"
+                 alt="Puteri Saripu Logo">
+
+            <h3>The Legend of Puteri Saripu</h3>
+
+            <p>An Interactive Augmented Reality Storybook</p>
+
+        </div>
+
+        <div class="university-logos">
+
+            <!-- INSERT UMS LOGO HERE -->
+
+            <!-- INSERT FCI LOGO HERE -->
+
+        </div>
+
+        <div class="team">
+
+            <h3>Our Team</h3>
+
+            <!-- EDIT GROUP MEMBERS HERE -->
+
+            <p>Group Member 1</p>
+            <p>Group Member 2</p>
+            <p>Group Member 3</p>
+            <p>Group Member 4</p>
+
+            <h4>Project Supervisor</h4>
+
+            <p>Sir Ryan Macdonell Andrias</p>
+
+        </div>
+
+        <div class="footer-bottom">
+
+            <p>
+                &copy; 2026 The Legend of Puteri Saripu.
+                All rights reserved.
+            </p>
+
+            <p>Universiti Malaysia Sabah</p>
+            <p>Faculty of Computing and Informatics</p>
+
+        </div>
+
+    </footer>
+
+
+    <!-- JAVASCRIPT -->
+
+    <script src="js/main.js" defer></script>
+
 </body>
 </html>
