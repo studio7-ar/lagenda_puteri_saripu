@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scene 1 | Puteri Saripu AR</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #101827;
+      color: white;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      background: #18263a;
+    }
+
+    header h1 {
+      font-size: 24px;
+      color: #f5d58b;
+    }
+
+    header p {
+      margin-top: 8px;
+      color: #cbd5e1;
+      font-size: 14px;
+    }
+
+    #ar-container {
+      width: 100%;
+      height: 65vh;
+      min-height: 350px;
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+
+    #ar-container video,
+    #ar-container canvas {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .instructions {
+      padding: 20px;
+    }
+
+    .instructions h2 {
+      color: #f5d58b;
+      margin-bottom: 10px;
+    }
+
+    .instructions p {
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    button {
+      margin: 10px 5px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 25px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #start-button {
+      background: #f5d58b;
+      color: #18263a;
+    }
+
+    #stop-button {
+      background: #e87979;
+      color: white;
+      display: none;
+    }
+
+    #status {
+      margin: 12px;
+      font-size: 13px;
+      color: #f5d58b;
+    }
+
+    a {
+      color: #f5d58b;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>PUTERI SARIPU</h1>
+    <p>Augmented Reality Experience</p>
+  </header>
+
+  <main>
+    <div id="ar-container"></div>
+
+    <div class="instructions">
+      <h2>Scene 1: The Beginning</h2>
+
+      <p>
+        Point your camera towards the Scene 1
+        AR marker to reveal the 3D scene.
+      </p>
+
+      <p id="status">Ready to start your AR experience.</p>
+
+      <button id="start-button">
+        Start AR
+      </button>
+
+      <button id="stop-button">
+        Stop AR
+      </button>
+
+      <p>
+        <a href="index.html">Back to Homepage</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- MindAR -->
+  <script src="./libs/mindar/mindar-image-three.prod.js"></script>
+
+  <!-- AR JavaScript -->
+  <script type="module" src="./ar.js"></script>
+
+</body>
+</html>
